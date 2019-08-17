@@ -1,5 +1,5 @@
 {
-  "name": "rxjs-finite-state-machine",
+  "name": "rxjs-fsm",
   "version": "1.0.0",
   "description": "An rxjs finite statemachine, i needed one for an Angular project but the code i made is just rxjs and typescript",
   "main": "dist/index.js",
