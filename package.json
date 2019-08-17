@@ -1,6 +1,6 @@
 {
   "name": "rxjs-fsm",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An rxjs finite statemachine, i needed one for an Angular project but the code i made is just rxjs and typescript",
   "main": "dist/index.js",
   "scripts": {
