@@ -9,8 +9,9 @@ export declare class RxFsm {
     private stateMap;
     private stateUpdate$;
     private defaultState;
+    state: FsmStateType;
     stateRead$: Observable<FsmStateType>;
-    start(defaultState: FsmStateType): Observable<string | number>;
+    start(defaultState: FsmStateType): void;
     init(): void;
     reset(): void;
     on(stateName: FsmStateType): Observable<FsmStateType>;

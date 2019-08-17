@@ -10,7 +10,6 @@ var RxFsm = /** @class */ (function () {
     RxFsm.prototype.start = function (defaultState) {
         this.defaultState = defaultState;
         this.init();
-        return this.stateRead$;
     };
     RxFsm.prototype.init = function () {
         var _this = this;
@@ -23,7 +22,7 @@ var RxFsm = /** @class */ (function () {
                 return _this.defaultState;
             var nextMachineState = _this.stateMap[machineState][transition];
             return nextMachineState ? nextMachineState : EXCEPTION_STATE;
-        }));
+        }), operators_1.tap(function (res) { return (_this.state = res); }), operators_1.share());
     };
     RxFsm.prototype.reset = function () {
         this.stateUpdate$.next(HARD_RESET_EVENT);
