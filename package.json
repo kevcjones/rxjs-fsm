@@ -1,0 +1,36 @@
+{
+  "name": "rx-fsm",
+  "version": "1.0.0",
+  "description": "An rxjs finite statemachine, i needed one for an Angular project but the code i made is just rxjs and typescript",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepublish": "tsc",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevCJones/rxjs-fsm.git"
+  },
+  "keywords": [
+    "typescript",
+    "fsm",
+    "rxjs",
+    "finite",
+    "state",
+    "machine"
+  ],
+  "author": "Kevin JOnes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KevCJones/rxjs-fsm/issues"
+  },
+  "homepage": "https://github.com/KevCJones/rxjs-fsm#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "rxjs": "^6.5.2",
+    "typescript": "~3.4.5"
+  },
+  "dependencies": {}
+}
