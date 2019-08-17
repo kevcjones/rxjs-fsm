@@ -12,7 +12,7 @@ export declare class RxjsFsm {
     state: RxjsFsmStateType;
     stateRead$: Observable<RxjsFsmStateType>;
     init(defaultState: RxjsFsmStateType): void;
-    private create();
+    private create;
     reset(): void;
     on(stateName: RxjsFsmStateType): Observable<RxjsFsmStateType>;
     send(eventName: string): void;
