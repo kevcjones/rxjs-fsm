@@ -1,1 +1,1 @@
-export * from './rx-fsm/rx-fsm';
+export * from './rxjs-fsm/rxjs-fsm';
