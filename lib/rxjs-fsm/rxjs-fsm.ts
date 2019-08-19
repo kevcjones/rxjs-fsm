@@ -20,6 +20,7 @@ export class RxjsFsm {
 
   init(defaultState: RxjsFsmStateType) {
     this.defaultState = defaultState;
+    this.state = defaultState;
     this.create();
   }
 
