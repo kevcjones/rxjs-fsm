@@ -1,4 +1,4 @@
-# rxjs-fsm
+# rxjs-fsm ![https://travis-ci.org/KevCJones/rxjs-fsm.svg?branch=master](https://travis-ci.org/KevCJones/rxjs-fsm.svg?branch=master)
 Just a finite statemachine done with RXJS. Will need some love before its production ready like tests, but it's not complicated, so it's probably safe if you need it, use it.
 
 ## Why?
@@ -11,8 +11,6 @@ Because i needed it, and it was a good test of remind myself how to write one bu
 [https://stackblitz.com/edit/stripe-fsm-npm](https://stackblitz.com/edit/stripe-fsm-npm)
 
 ## TODO
-
-- Configure CI
 - Write better docs
 - Add some examples
 - Consider visual outputs for FSM
