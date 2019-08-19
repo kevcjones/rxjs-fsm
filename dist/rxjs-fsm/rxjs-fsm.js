@@ -12,31 +12,40 @@ var RxjsFsm = /** @class */ (function () {
         this.create();
     };
     RxjsFsm.prototype.create = function () {
-        var _this = this;
         if (this.stateUpdate$) {
             this.stateUpdate$.complete();
         }
-        this.stateUpdate$ = new rxjs_1.Subject();
-        this.stateRead$ = this.stateUpdate$.asObservable().pipe(operators_1.startWith(this.defaultState), operators_1.scan(function (machineState, transition) {
-            if (transition === HARD_RESET_EVENT)
-                return _this.defaultState;
-            var nextMachineState = _this.stateMap[machineState][transition];
-            return nextMachineState ? nextMachineState : EXCEPTION_STATE;
-        }), operators_1.tap(function (res) { return (_this.state = res); }), operators_1.share());
+        this.stateUpdate$ = new rxjs_1.BehaviorSubject(this.defaultState);
+        this.stateRead$ = this.stateUpdate$.asObservable().pipe(operators_1.share());
     };
+    RxjsFsm.prototype.injectEvent = function (event) {
+        var nextMachineState = event === HARD_RESET_EVENT
+            ? this.defaultState
+            : this.stateMap[this.stateUpdate$.value][event] || EXCEPTION_STATE;
+        this.stateUpdate$.next(nextMachineState);
+    };
+    Object.defineProperty(RxjsFsm.prototype, "state", {
+        get: function () {
+            return this.stateUpdate$.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     RxjsFsm.prototype.reset = function () {
-        this.stateUpdate$.next(HARD_RESET_EVENT);
+        this.injectEvent(HARD_RESET_EVENT);
+        return this.stateUpdate$.value !== EXCEPTION_STATE;
     };
     RxjsFsm.prototype.on = function (stateName) {
         return this.stateRead$.pipe(operators_1.filter(function (state) { return state === stateName; }));
     };
     RxjsFsm.prototype.send = function (eventName) {
-        this.stateUpdate$.next(eventName);
+        this.injectEvent(eventName);
+        return this.stateUpdate$.value !== EXCEPTION_STATE;
     };
     RxjsFsm.prototype.listTransitions = function (stateName) {
-        if (!this.stateMap[stateName])
+        if (!this.stateMap[stateName || this.state])
             return [HARD_RESET_EVENT];
-        return Object.keys(this.stateMap[stateName]);
+        return Object.keys(this.stateMap[stateName || this.state]);
     };
     RxjsFsm.prototype.onException = function () {
         return this.on(EXCEPTION_STATE);

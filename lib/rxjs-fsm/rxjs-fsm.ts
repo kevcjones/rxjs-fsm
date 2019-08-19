@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { filter, scan, share, startWith, tap } from 'rxjs/operators';
 
 const EXCEPTION_STATE = '_exception_';
@@ -13,14 +13,12 @@ export interface RxjsFsmTransition {
 
 export class RxjsFsm {
   private stateMap: any;
-  private stateUpdate$: Subject<RxjsFsmStateType>;
+  private stateUpdate$: BehaviorSubject<RxjsFsmStateType>;
   private defaultState: RxjsFsmStateType;
-  state: RxjsFsmStateType;
   stateRead$: Observable<RxjsFsmStateType>;
 
   init(defaultState: RxjsFsmStateType) {
     this.defaultState = defaultState;
-    this.state = defaultState;
     this.create();
   }
 
@@ -28,21 +26,25 @@ export class RxjsFsm {
     if (this.stateUpdate$) {
       this.stateUpdate$.complete();
     }
-    this.stateUpdate$ = new Subject();
-    this.stateRead$ = this.stateUpdate$.asObservable().pipe(
-      startWith(this.defaultState),
-      scan((machineState: RxjsFsmStateType, transition: string) => {
-        if (transition === HARD_RESET_EVENT) return this.defaultState;
-        const nextMachineState = this.stateMap[machineState][transition];
-        return nextMachineState ? nextMachineState : EXCEPTION_STATE;
-      }),
-      tap(res => (this.state = res)),
-      share()
-    );
+    this.stateUpdate$ = new BehaviorSubject(this.defaultState);
+    this.stateRead$ = this.stateUpdate$.asObservable().pipe(share());
+  }
+
+  private injectEvent(event: string) {
+    const nextMachineState =
+      event === HARD_RESET_EVENT
+        ? this.defaultState
+        : this.stateMap[this.stateUpdate$.value][event] || EXCEPTION_STATE;
+    this.stateUpdate$.next(nextMachineState);
+  }
+
+  get state() {
+    return this.stateUpdate$.value;
   }
 
   reset() {
-    this.stateUpdate$.next(HARD_RESET_EVENT);
+    this.injectEvent(HARD_RESET_EVENT);
+    return this.stateUpdate$.value !== EXCEPTION_STATE;
   }
 
   on(stateName: RxjsFsmStateType): Observable<RxjsFsmStateType> {
@@ -50,12 +52,13 @@ export class RxjsFsm {
   }
 
   send(eventName: string) {
-    this.stateUpdate$.next(eventName);
+    this.injectEvent(eventName);
+    return this.stateUpdate$.value !== EXCEPTION_STATE;
   }
 
-  listTransitions(stateName: RxjsFsmStateType) {
-    if (!this.stateMap[stateName]) return [HARD_RESET_EVENT];
-    return Object.keys(this.stateMap[stateName]);
+  listTransitions(stateName?: RxjsFsmStateType) {
+    if (!this.stateMap[stateName || this.state]) return [HARD_RESET_EVENT];
+    return Object.keys(this.stateMap[stateName || this.state]);
   }
 
   onException(): Observable<RxjsFsmStateType> {
@@ -74,7 +77,7 @@ export class RxjsFsm {
   }
 
   remove(name: RxjsFsmStateType) {
-    if (!this.stateMap && this.stateMap[name]) {
+    if (!this.stateMap || !this.stateMap[name]) {
       return;
     }
 

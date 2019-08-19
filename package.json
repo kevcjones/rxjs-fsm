@@ -6,7 +6,17 @@
   "scripts": {
     "prepublish": "tsc",
     "build": "tsc",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "mocha -r ts-node/register lib/**/*.spec.ts",
+    "coverage": "nyc mocha"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "exclude": ["dist", "coverage","test","**/*.spec.ts","lib/index.ts"],
+    "reporter": [
+      "text",
+      "lcov"
+    ]
   },
   "repository": {
     "type": "git",
@@ -27,11 +37,15 @@
   },
   "homepage": "https://github.com/KevCJones/rxjs-fsm#readme",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
+    "jsdom": "^15.1.1",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.0",
     "rxjs": "^6.5.2",
+    "source-map-support": "^0.5.13",
     "ts-node": "^8.3.0",
     "typescript": "~3.4.5"
   },
