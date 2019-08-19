@@ -62,7 +62,7 @@ var RxjsFsm = /** @class */ (function () {
     };
     RxjsFsm.prototype.remove = function (name) {
         var _this = this;
-        if (!this.stateMap && this.stateMap[name]) {
+        if (!this.stateMap || !this.stateMap[name]) {
             return;
         }
         // delete the state

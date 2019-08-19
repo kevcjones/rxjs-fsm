@@ -11,8 +11,8 @@ export declare class RxjsFsm {
     private defaultState;
     stateRead$: Observable<RxjsFsmStateType>;
     init(defaultState: RxjsFsmStateType): void;
-    private create();
-    private injectEvent(event);
+    private create;
+    private injectEvent;
     readonly state: string | number;
     reset(): boolean;
     on(stateName: RxjsFsmStateType): Observable<RxjsFsmStateType>;
