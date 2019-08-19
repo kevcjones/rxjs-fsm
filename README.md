@@ -12,7 +12,6 @@ Because i needed it, and it was a good test of remind myself how to write one bu
 
 ## TODO
 
-- Write tests
 - Configure CI
 - Write better docs
 - Add some examples
