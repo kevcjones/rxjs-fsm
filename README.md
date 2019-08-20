@@ -10,7 +10,11 @@ Because i needed it, and it was a good test of remind myself how to write one bu
 #### Stackblitz playground
 [https://stackblitz.com/edit/stripe-fsm-npm](https://stackblitz.com/edit/stripe-fsm-npm)
 
-## TODO
-- Write better docs
-- Add some examples
-- Consider visual outputs for FSM
+## TOD
+- [+] ~Write tests~
+- [+] ~Configure CI~
+- [] timeout triggers observable style - timer(), or when something$ emits from somewhere
+- [] on entry/exit triggers
+- [] Write better docs
+- [] Add some examples
+- [] Consider visual outputs for FSM
